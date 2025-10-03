@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 NVIDIA GPU対応チャットボットCLI
-日本語特化の超軽量sarashina2.2-0.5Bモデルを使用
+ファインチューニング済みsarashina2.2-0.5Bモデルを使用
 """
 
 import torch
@@ -10,7 +10,7 @@ import sys
 
 
 class ChatBot:
-    def __init__(self, model_name="sbintuitions/sarashina2.2-0.5B-instruct-v0.1"):
+    def __init__(self, model_name="/home/maniax/dev/fine-tuning/output/final_model"):
         """
         チャットボットの初期化
 
@@ -64,7 +64,7 @@ class ChatBot:
         Returns:
             生成された応答テキスト
         """
-        # Phi-3用のプロンプトフォーマット
+        # プロンプトフォーマット
         messages = [
             {"role": "user", "content": user_input}
         ]
