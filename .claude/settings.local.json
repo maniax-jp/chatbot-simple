@@ -2,10 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(source:*)",
-      "Bash(pip install:*)",
-      "Bash(git init:*)"
+      "Bash(pip install:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git init:*)"
+    ]
   }
 }
