@@ -91,8 +91,11 @@ class ChatBot:
 
     def run_interactive(self):
         """対話型CLIセッションを実行"""
+        # モデル名を取得（パス形式から名前部分のみ抽出）
+        model_display_name = self.model.config._name_or_path.split('/')[-1]
+
         print("=" * 60)
-        print("チャットボットCLI - Phi-3-mini")
+        print(f"チャットボットCLI - {model_display_name}")
         print("=" * 60)
         print("終了するには 'exit', 'quit', 'q' を入力してください")
         print("=" * 60)
