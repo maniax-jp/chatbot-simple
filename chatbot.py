@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 NVIDIA GPU対応チャットボットCLI
-軽量なPhi-3-miniモデルを使用
+日本語特化の超軽量sarashina2.2-0.5Bモデルを使用
 """
 
 import torch
@@ -10,7 +10,7 @@ import sys
 
 
 class ChatBot:
-    def __init__(self, model_name="microsoft/Phi-3.5-mini-instruct"):
+    def __init__(self, model_name="sbintuitions/sarashina2.2-0.5B-instruct-v0.1"):
         """
         チャットボットの初期化
 

@@ -1,19 +1,19 @@
 # GPU対応チャットボットCLI
 
-NVIDIA GPUとPhi-3-mini (3.8B)モデルを使用した軽量チャットボット
+NVIDIA GPUとsarashina2.2-0.5B日本語モデルを使用した超軽量チャットボット
 
 ## 特徴
 
-- **軽量モデル**: Microsoft Phi-3-mini (3.8Bパラメータ)
+- **超軽量モデル**: sarashina2.2-0.5B (0.5Bパラメータ、日本語特化)
 - **GPU加速**: NVIDIA CUDA対応
-- **オープンソース**: MITライセンスのモデル使用
+- **オープンソース**: Apache 2.0ライセンス
 - **シンプルなCLI**: 使いやすいコマンドラインインターフェース
 
 ## 必要要件
 
 - Python 3.8以上
 - NVIDIA GPU (CUDA対応)
-- 8GB以上のVRAM推奨
+- 1GB以上のVRAM推奨
 
 ## インストール
 
@@ -34,11 +34,11 @@ python chatbot.py
 
 ## モデルについて
 
-**Phi-3-mini-4k-instruct**
-- パラメータ数: 3.8B
-- コンテキスト長: 4K トークン
-- ライセンス: MIT
-- 開発元: Microsoft
+**sarashina2.2-0.5B-instruct-v0.1**
+- パラメータ数: 0.5B (超軽量)
+- 日本語特化モデル
+- ライセンス: Apache 2.0
+- 開発元: SB Intuitions
 
 ## カスタマイズ
 
@@ -50,6 +50,6 @@ python chatbot.py
 
 ### 他の推奨軽量モデル
 
-- `microsoft/Phi-3-mini-128k-instruct` (128Kコンテキスト版)
-- `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (1.1B、より軽量)
-- `stabilityai/stablelm-2-zephyr-1_6b` (1.6B)
+- `sbintuitions/sarashina2.2-1B-instruct-v0.1` (1B、より高性能な日本語モデル)
+- `microsoft/Phi-3.5-mini-instruct` (3.8B、多言語対応)
+- `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (1.1B、英語)
