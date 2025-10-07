@@ -6,18 +6,23 @@ NVIDIA GPU対応チャットボットCLI
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from peft import PeftModel
 import sys
 
 
 class ChatBot:
-    def __init__(self, model_name="/home/maniax/dev/fine-tuning/output/final_model"):
+    def __init__(self,
+                 base_model_name="sbintuitions/sarashina2.2-0.5B-instruct-v0.1",
+                 lora_adapter_path="/home/maniax/dev/workspace/sarashina_0.5B_lora"):
         """
         チャットボットの初期化
 
         Args:
-            model_name: 使用するHugging Faceモデル名
+            base_model_name: ベースとなるHugging Faceモデル名
+            lora_adapter_path: LoRAアダプターのパス
         """
-        print(f"モデルをロード中: {model_name}")
+        print(f"ベースモデルをロード中: {base_model_name}")
+        print(f"LoRAアダプターをロード中: {lora_adapter_path}")
         print("初回実行時はモデルのダウンロードに時間がかかります...")
 
         # GPUが利用可能か確認
@@ -28,20 +33,25 @@ class ChatBot:
             self.device = "cuda"
             print(f"GPU検出: {torch.cuda.get_device_name(0)}")
 
-        # トークナイザーとモデルのロード
+        # トークナイザーのロード（LoRAアダプターから）
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name,
+            lora_adapter_path,
             trust_remote_code=True
         )
 
-        self.model = AutoModelForCausalLM.from_pretrained(
-            model_name,
+        # ベースモデルのロード
+        base_model = AutoModelForCausalLM.from_pretrained(
+            base_model_name,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
             device_map="auto",
             trust_remote_code=True,
             _attn_implementation="eager",
             use_cache=False  # キャッシュを無効化してseen_tokensエラーを回避
         )
+
+        # LoRAアダプターをベースモデルにマージ
+        print("LoRAアダプターをマージ中...")
+        self.model = PeftModel.from_pretrained(base_model, lora_adapter_path)
 
         # テキスト生成パイプラインの作成
         self.pipe = pipeline(
@@ -91,8 +101,11 @@ class ChatBot:
 
     def run_interactive(self):
         """対話型CLIセッションを実行"""
-        # モデル名を取得（パス形式から名前部分のみ抽出）
-        model_display_name = self.model.config._name_or_path.split('/')[-1]
+        # モデル名を取得（LoRA使用時はベースモデル名を表示）
+        if hasattr(self.model, 'peft_config'):
+            model_display_name = "sarashina2.2-0.5B + LoRA"
+        else:
+            model_display_name = self.model.config._name_or_path.split('/')[-1]
 
         print("=" * 60)
         print(f"チャットボットCLI - {model_display_name}")
